@@ -17,12 +17,6 @@
     "description" : "SwaggerHub API Auto Mocking",
     "url" : "https://virtserver.swaggerhub.com/rakheshkumbi/Unicorn-Interface/1.0.1"
   }, {
-    "description" : "SwaggerHub API Auto Mocking",
-    "url" : "https://virtserver.swaggerhub.com/rakheshkumbi/Unicorn1/1.0.0"
-  }, {
-    "description" : "SwaggerHub API Auto Mocking",
-    "url" : "https://virtserver.swaggerhub.com/rakheshkumbi/Unicorn/1.0.0"
-  }, {
     "url" : "https://petstore.swagger.io/v2"
   } ],
   "tags" : [ {
