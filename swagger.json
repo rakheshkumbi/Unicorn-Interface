@@ -1,0 +1,518 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "description" : "This is to provide rest interface to Unicorn. The rest API's can be used to execute and manage the tests.\n",
+    "version" : "1.0.1",
+    "title" : "Unicorn Rest Interface",
+    "termsOfService" : "http://swagger.io/terms/",
+    "contact" : {
+      "email" : "rakeshkumbi@telaverge.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/rakheshkumbi/Unicorn-Interface/1.0.1"
+  }, {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/rakheshkumbi/Unicorn1/1.0.0"
+  }, {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/rakheshkumbi/Unicorn/1.0.0"
+  }, {
+    "url" : "https://petstore.swagger.io/v2"
+  } ],
+  "tags" : [ {
+    "name" : "tests",
+    "description" : "Everything about exeution and handling of tests."
+  } ],
+  "paths" : {
+    "/tests/{operation}" : {
+      "get" : {
+        "tags" : [ "tests" ],
+        "summary" : "[1] Listing SUT's\n",
+        "description" : "Supported operations\n* **LIST_SUT** - Lists all the SUT's\n",
+        "operationId" : "listAllSUT",
+        "parameters" : [ {
+          "name" : "operation",
+          "in" : "path",
+          "description" : "Operation to be performed.",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "LIST_SUT" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Tests"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/FailureCause"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tests/{sut}/{operation}" : {
+      "post" : {
+        "tags" : [ "tests" ],
+        "summary" : "[1] Starting SUT execution\n[2] Stopping SUT execution\n",
+        "description" : "Supported operations\n   * **START_TEST** - Invokes the execution of all the test cases under the given SUT.\n   * **STOP_TEST** - Stops the SUT execution.\n",
+        "operationId" : "sutExecutionHandler",
+        "parameters" : [ {
+          "name" : "sut",
+          "in" : "path",
+          "description" : "Name of the SUT",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "operation",
+          "in" : "path",
+          "description" : "Operations to be performed.",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "START_TEST", "STOP_TEST" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/APIResponse"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/FailureCause"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get" : {
+        "tags" : [ "tests" ],
+        "summary" : "[1] Listing Test suites\n",
+        "description" : "Supported operations\n* **LIST_TEST_SUITES** - Lists all the test suites under the given SUT\n",
+        "operationId" : "sutDetails",
+        "parameters" : [ {
+          "name" : "sut",
+          "in" : "path",
+          "description" : "Name of the SUT",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "operation",
+          "in" : "path",
+          "description" : "Operation to be performed.",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "LIST_TEST_SUITES" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Tests"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/FailureCause"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tests/{sut}/{testsuite}/{operation}" : {
+      "post" : {
+        "tags" : [ "tests" ],
+        "summary" : "[1] Starting Test suite execution\n[2] Stopping Test suite execution\n",
+        "description" : "Supported operations\n* **START_TEST** - Invokes the execution of all the test cases under the given Test suite. \n* **STOP_TEST** - Stops the test suite execution.\n",
+        "operationId" : "testsuiteExecutionHandler",
+        "parameters" : [ {
+          "name" : "sut",
+          "in" : "path",
+          "description" : "Name of the SUT",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "testsuite",
+          "in" : "path",
+          "description" : "Name of the test suite",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "operation",
+          "in" : "path",
+          "description" : "Operation ID of the operation to be performed.",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "START_TEST", "STOP_TEST" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/APIResponse"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/FailureCause"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get" : {
+        "tags" : [ "tests" ],
+        "summary" : "[1] Listing Test suites\n",
+        "description" : "Supported operations\n* **LIST_TEST_CASES** - Lists all the test cases under the given test suite\n",
+        "operationId" : "testSuiteDetails",
+        "parameters" : [ {
+          "name" : "sut",
+          "in" : "path",
+          "description" : "Name of the SUT",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "testsuite",
+          "in" : "path",
+          "description" : "Name of the test suite",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "operation",
+          "in" : "path",
+          "description" : "Operation to be performed.",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "LIST_TEST_CASES" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Tests"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/FailureCause"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tests/{sut}/{testsuite}/{testcase}/{operation}" : {
+      "post" : {
+        "tags" : [ "tests" ],
+        "summary" : "[1] Starting Test Case execution\n[2] Stopping Test Case Execution\n",
+        "description" : "Supported operations\n1) **START_TEST** - Invokess the execution of given test case.\n2) **STOP_TEST** - Stops the execution of given test case.\n",
+        "operationId" : "testcaseExecutionHandler",
+        "parameters" : [ {
+          "name" : "sut",
+          "in" : "path",
+          "description" : "Name of the SUT",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "testsuite",
+          "in" : "path",
+          "description" : "Name of the test suite",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "testcase",
+          "in" : "path",
+          "description" : "Name of the test case",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "operation",
+          "in" : "path",
+          "description" : "Operation ID of the operation to be performed.",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "START_TEST", "STOP_TEST" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/APIResponse"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/FailureCause"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get" : {
+        "tags" : [ "tests" ],
+        "summary" : "[1] Getting test case status\n[2] Getting test case statistics\n",
+        "description" : "Supported operations\n1) **TEST_STATUS** - Gives the test case status(In Progress/Stopped/Success/Failed)\n2) **TEST_STATS** \n    * Test status - In Progress/Stopped/Success/Failed\n    * Test Duration\n    * Time elapsed\n    * TPS so far\n    * Messages sent so far\n    * Response Latencies\n",
+        "operationId" : "statsHandler",
+        "parameters" : [ {
+          "name" : "sut",
+          "in" : "path",
+          "description" : "Name of the SUT",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "testsuite",
+          "in" : "path",
+          "description" : "Name of the test suite",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "testcase",
+          "in" : "path",
+          "description" : "Name of the test case",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "operation",
+          "in" : "path",
+          "description" : "Operation ID of the operation to be performed.",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "TEST_STATUS", "TEST_STATS" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "oneOf" : [ {
+                      "$ref" : "#/components/schemas/TestCaseStatistics"
+                    }, {
+                      "$ref" : "#/components/schemas/TestCaseStatus"
+                    } ]
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/FailureCause"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "APIResponse" : {
+        "type" : "object",
+        "properties" : {
+          "taskMessage" : {
+            "type" : "string"
+          }
+        }
+      },
+      "FailureCause" : {
+        "type" : "object",
+        "properties" : {
+          "failureCause" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Tests" : {
+        "type" : "object",
+        "properties" : {
+          "tests" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "TestCaseStatistics" : {
+        "type" : "object",
+        "properties" : {
+          "taskMessage" : {
+            "type" : "string"
+          },
+          "testCaseStatus" : {
+            "type" : "string"
+          },
+          "testDuration" : {
+            "type" : "string"
+          },
+          "timeElapsed" : {
+            "type" : "string"
+          },
+          "tps" : {
+            "type" : "string"
+          },
+          "messagesSent" : {
+            "type" : "string"
+          },
+          "responseLatencies" : {
+            "type" : "string"
+          }
+        }
+      },
+      "TestCaseStatus" : {
+        "type" : "object",
+        "properties" : {
+          "taskMessage" : {
+            "type" : "string"
+          },
+          "testCasestatus" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}
